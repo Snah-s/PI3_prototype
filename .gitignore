@@ -1,1 +1,7 @@
 .vscode/
+api_py/
+
+__pycache__/
+build/
+*.spec
+*.log
