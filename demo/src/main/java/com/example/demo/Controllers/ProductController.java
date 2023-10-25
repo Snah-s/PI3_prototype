@@ -1,11 +1,12 @@
-package com.example.demo.application;
+package com.example.demo.Controllers;
 
-import com.example.demo.domain.Product;
-import com.example.demo.domain.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.Domain.Product;
+import com.example.demo.Service.ProductService;
 
 import java.util.*;
 
