@@ -1,4 +1,4 @@
-package com.example.demo.Domain;
+package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
