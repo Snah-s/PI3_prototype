@@ -6,48 +6,48 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.model.Event;
-import com.example.demo.repository.EventRepository;
+import com.example.demo.model.Product;
+import com.example.demo.repository.ProductRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/events")
-public class EventController {
+@RequestMapping("api/product")
+public class ProductController {
 
     @Autowired
-    private EventRepository eventRepository;
+    private ProductRepository eventRepository;
 
     @Secured({ "ADMIN", "USER" })
     @GetMapping
-    public ResponseEntity<List<Event>> read() {
-        List<Event> query = eventRepository.findAll();
-        return new ResponseEntity<List<Event>>(query, HttpStatus.OK);
+    public ResponseEntity<List<Product>> read() {
+        List<Product> query = eventRepository.findAll();
+        return new ResponseEntity<List<Product>>(query, HttpStatus.OK);
     }
 
     @Secured({ "ADMIN", "USER" })
     @GetMapping("/{id}")
-    public ResponseEntity<Event> readId(@PathVariable Long id) {
-        Optional<Event> query = eventRepository.findById(id);
+    public ResponseEntity<Product> readId(@PathVariable Long id) {
+        Optional<Product> query = eventRepository.findById(id);
         if (query.isPresent()) {
-            return new ResponseEntity<Event>(query.get(), HttpStatus.OK);
+            return new ResponseEntity<Product>(query.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody Event Event) {
+    public ResponseEntity<String> create(@RequestBody Product Event) {
         eventRepository.save(Event);
         return new ResponseEntity<>("Event created :)))", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@RequestBody Event data, @PathVariable Long id) {
-        Optional<Event> query = eventRepository.findById(id);
+    public ResponseEntity<String> update(@RequestBody Product data, @PathVariable Long id) {
+        Optional<Product> query = eventRepository.findById(id);
         if (query.isPresent()) {
-            Event instance = query.get();
+            Product instance = query.get();
             instance = data;
             eventRepository.save(instance);
             return new ResponseEntity<>("Event updated :D", HttpStatus.OK);
@@ -58,7 +58,7 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        Optional<Event> query = eventRepository.findById(id);
+        Optional<Product> query = eventRepository.findById(id);
         if (query.isPresent()) {
             eventRepository.deleteById(id);
             return new ResponseEntity<>("Event deleted", HttpStatus.OK);

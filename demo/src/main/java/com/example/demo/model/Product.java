@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "event")
-public class Event {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -63,11 +63,11 @@ public class Event {
         this.country = Country;
     }
 
-    public Event() {
+    public Product() {
 
     }
 
-    public Event(Long id, String name, String city, String country) {
+    public Product(Long id, String name, String city, String country) {
         this.id = id;
         this.name = name;
         this.city = city;
