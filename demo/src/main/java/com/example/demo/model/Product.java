@@ -5,7 +5,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "event")
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,10 @@ public class Product {
     private String name;
 
     @Column(nullable = false)
-    private String city;
+    private String brand;
 
     @Column(nullable = false)
-    private String country;
+    private String type;
 
     @ManyToMany
     private Set<Comment> comments;
@@ -47,30 +47,30 @@ public class Product {
         this.name = name;
     }
 
-    public String getCity() {
-        return this.city;
+    public String getBrand() {
+        return this.brand;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public String getCountry() {
-        return this.country;
+    public String getType() {
+        return this.type;
     }
 
-    public void setCountry(String Country) {
-        this.country = Country;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Product() {
 
     }
 
-    public Product(Long id, String name, String city, String country) {
+    public Product(Long id, String name, String brand, String type) {
         this.id = id;
         this.name = name;
-        this.city = city;
-        this.country = country;
+        this.brand = brand;
+        this.type = type;
     }
 }

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/product")
+@RequestMapping("api/products")
 public class ProductController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<String> create(@RequestBody Product Event) {
         eventRepository.save(Event);
-        return new ResponseEntity<>("Event created :)))", HttpStatus.CREATED);
+        return new ResponseEntity<>("Product created :)))", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -50,9 +50,9 @@ public class ProductController {
             Product instance = query.get();
             instance = data;
             eventRepository.save(instance);
-            return new ResponseEntity<>("Event updated :D", HttpStatus.OK);
+            return new ResponseEntity<>("Product updated :D", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Event not found :((", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Product not found :((", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -61,9 +61,9 @@ public class ProductController {
         Optional<Product> query = eventRepository.findById(id);
         if (query.isPresent()) {
             eventRepository.deleteById(id);
-            return new ResponseEntity<>("Event deleted", HttpStatus.OK);
+            return new ResponseEntity<>("Product deleted", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Event not found :((", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Product not found :((", HttpStatus.NOT_FOUND);
         }
     }
 }

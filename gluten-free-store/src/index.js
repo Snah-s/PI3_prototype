@@ -1,17 +1,51 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useEffect, StrictMode } from 'react';
+import * as ReactDOM from 'react-dom/client';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+
+import Access from './pages/access/access';
+import Discover from './pages/discover/discover';
+import Post from './pages/post/post';
+
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Access />,
+  },
+  {
+    path: 'access',
+    element: <Access />,
+  },
+  {
+    path: 'discover',
+    element: <Discover />,
+  },
+  {
+    path: 'post/:id',
+    element: <Post />,
+  },
+]);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function checkSession() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    router.navigate('/access');
+  }
+}
+
+function App() {
+  checkSession();
+  return (
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
