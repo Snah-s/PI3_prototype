@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 
 import Access from './pages/access/access';
-import Discover from './pages/discover/discover';
+import Discover from './pages/dashboard/dashboard';
 import Post from './pages/post/post';
 
 import './index.css';

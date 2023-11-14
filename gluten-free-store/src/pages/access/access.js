@@ -182,8 +182,8 @@ export default function Access() {
   return (
     <div className="body access">
       <div className="appWrapper">
-        <div className="background">
-        </div>
+      <div className="background background-image">
+      </div>
         <div className="accessWrapper">
           <LoginBox isLogin={isLogin} switchAccess={switchAccess} />
           <SignUpBox isLogin={isLogin} switchAccess={switchAccess} />
