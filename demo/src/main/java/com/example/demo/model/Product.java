@@ -20,6 +20,11 @@ public class Product {
     @Column(nullable = false)
     private String type;
 
+    @Column(nullable = false)
+    private double price;
+
+    private String description;
+
     @ManyToMany
     private Set<Comment> comments;
 
@@ -63,14 +68,32 @@ public class Product {
         this.type = type;
     }
 
+    public double getPrice(){
+        return this.price;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
+    }
+
+    public String getDescription(){
+        return this.description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
     public Product() {
 
     }
 
-    public Product(Long id, String name, String brand, String type) {
+    public Product(Long id, String name, String brand, String type, double price, String description) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.type = type;
+        this.price = price;
+        this.description = description;
     }
 }

@@ -4,7 +4,6 @@ import com.example.demo.model.Role;
 import com.example.demo.model.Account;
 import com.example.demo.dto.*;
 import com.example.demo.repository.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +19,6 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    @Autowired
     public AuthenticationService(AccountRepository accountRepository, PasswordEncoder passwordEncoder,
             JwtService jwtService, AuthenticationManager authenticationManager) {
         this.accountRepository = accountRepository;

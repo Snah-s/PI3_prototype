@@ -9,7 +9,7 @@ function SearchBar() {
   return (
     <input
       className="searchBar"
-      placeholder="Start typing to search for cool stuff!"
+      placeholder="Search some products"
     ></input>
   );
 }
@@ -61,7 +61,7 @@ function CardRow({ rowIndex }) {
   for (let i = 0; i < 3; ++i) {
     let cardIndex = 3 * rowIndex + i;
     cards.push(
-      <Card key={i} title={'Event ' + cardIndex} location={'City, Country'} />
+      <Card key={i} title={'Product ' + cardIndex} location={'Brand, Type'} />
     );
   }
   return <div className="cardRow">{cards}</div>;
@@ -77,7 +77,7 @@ function Card({ data }) {
         </div>
       </div>
       <div className="thumbnail">
-        <img className="image" src="https://random.imagecdn.app/500/150"></img>
+        <img className="image" src="https://coffee.alexflipnote.dev/random"></img>
       </div>
       <div className="tags">{<RandomTags />}</div>
     </div>

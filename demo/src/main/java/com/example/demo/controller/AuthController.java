@@ -4,7 +4,6 @@ import com.example.demo.dto.JwtAuthenticationResponse;
 import com.example.demo.dto.SignInRequest;
 import com.example.demo.dto.SignUpRequest;
 import com.example.demo.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthenticationService authenticationService;
 
-    @Autowired
     public AuthController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
