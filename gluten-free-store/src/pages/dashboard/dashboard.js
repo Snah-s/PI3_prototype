@@ -3,7 +3,6 @@ import axios from 'axios';
 
 import './dashboard.css';
 import arrow from './chevron_right_FILL0_wght400_GRAD0_opsz24.svg';
-import dawg from './F1-ZVoKXsAIW8EU.jpg';
 
 function SearchBar() {
   return (
