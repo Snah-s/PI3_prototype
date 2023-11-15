@@ -23,6 +23,9 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
+    @Column(nullable = false)
+    private String image;
+
     private String description;
 
     @ManyToMany
@@ -76,6 +79,14 @@ public class Product {
         this.price = price;
     }
 
+    public String getImage(){
+        return this.image;
+    }
+
+    public void setImage(String image){
+        this.image = image;
+    }
+
     public String getDescription(){
         return this.description;
     }
@@ -88,12 +99,13 @@ public class Product {
 
     }
 
-    public Product(Long id, String name, String brand, String type, double price, String description) {
+    public Product(Long id, String name, String brand, String type, double price, String image, String description) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.type = type;
         this.price = price;
+        this.image = image;
         this.description = description;
     }
 }
