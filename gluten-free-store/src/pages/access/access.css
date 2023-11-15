@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Chelsea+Market&display=swap');
 
-.access {
-  --primary: rgb(255, 255, 255);
+:root{
+  --aguaymanto: rgb(238, 154, 27);
+  --caqui: rgb(243, 139, 21);
+  --login: rgb(230, 230, 230);
 
   --login-box-width: 50vmin;
   --login-box-background: rgb(255, 255, 255);
@@ -16,111 +18,144 @@
 
   --regular: 2vmin;
   --large: 4vmin;
-
-  .accessWrapper {
-    width: 50%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: width 0.5s;
-    user-select: none;
-  }
-
-  .loginBox {
-    position: absolute;
-    width: var(--login-box-width);
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
-    transition: all 0.2s;
-    box-sizing: border-box;
-    --focusedColor: var(--login-box-field-background-focused);
-    .accessButton {
-      background: var(--login-button-background);
-    }
-    .prompt {
-      --promptColor: var(--login-button-background);
-    }
-  }
-
-  .signUpBox {
-    position: absolute;
-    width: var(--login-box-width);
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
-    transition: all 0.2s;
-    box-sizing: border-box;
-    --focusedColor: var(--signup-box-field-background-focused);
-    .accessButton {
-      background: var(--signup-button-background);
-    }
-    .prompt {
-      --promptColor: var(--signup-button-background);
-    }
-  }
-
-  .promptWrapper {
-    margin-top: 2vmin;
-    display: flex;
-    justify-content: center;
-  }
-
-  .prompt {
-    text-align: center;
-    font-size: var(--regular);
-    color: rgb(195, 132, 77);
-    font-weight: bold;
-  }
-
-  .accessButton {
-    letter-spacing: 0.08em;
-    font-weight: bold;
-    font-size: var(--regular);
-    color: white;
-    border-radius: 2vmin;
-    height: 8vmin;
-    width: 100%;
-  }
-
-  .inputField {
-    margin-bottom: 2vmin;
-    height: 6vmin;
-    width: 100%;
-    border-radius: 2vmin;
-    box-sizing: border-box;
-    padding: 2vmin;
-    font-size: var(--regular);
-    transition: all 0.5s;
-  }
-
-  .title {
-    font-size: var(--large);
-    color: rgb(195, 132, 77);
-    text-align: center;
-    margin-bottom: 2vmin;
-    font-weight: bold;
-  }
-
-  .background {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: visible;
-    position: absolute;
-  }
-
-.background-image {
-  background-image: url("../../../images/Background.png");
-
-  background-size: cover;
-  background-position: center;
 }
 
+.body {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--aguaymanto);
+}
+
+.accessWrapper{
+  position: relative;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginBox {
+  position: absolute;
+  background: var(--login);
+  border-radius: 6vmin;
+  height: 70vmin;
+  width: 60vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4vmin;
+  box-sizing: border-box;
+  justify-content: space-evenly;
+  --focusedColor: var(--login-box-field-background-focused);
+  .accessButton {
+    background: var(--login-button-background);
+  }
+  .prompt {
+    --promptColor: var(--login-button-background);
+  }
+}
+
+.signUpBox {
+  position: absolute;
+  background: var(--login);
+  border-radius: 6vmin;
+  height: 80vmin;
+  width: 60vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4vmin;
+  box-sizing: border-box;
+  justify-content: space-evenly;
+  --focusedColor: var(--signup-box-field-background-focused);
+  .accessButton {
+    background: var(--signup-button-background);
+  }
+  .prompt {
+    --promptColor: var(--signup-button-background);
+  }
+}
+
+.promptWrapper {
+  margin-top: 2vmin;
+  display: flex;
+  justify-content: center;
+}
+
+.prompt {
+  text-align: center;
+  font-size: var(--regular);
+  color: rgb(195, 132, 77);
+  font-weight: bold;
+}
+
+.accessButton {
+  letter-spacing: 0.08em;
+  font-weight: bold;
+  font-size: var(--regular);
+  color: white;
+  border-radius: 2vmin;
+  height: 8vmin;
+  width: 100%;
+}
+
+.inputField {
+  width: 100%;
+  height: 8vmin;
+  border-radius: 8vmin;
+  box-sizing: border-box;
+  padding: 4vmin;
+  border: none;
+  outline: transparent;
+  transition: all 0.1s;
+  font-size: 2vmin;
+}
+
+
+.title {
+  font-size: var(--large);
+  font-family: 'Chelsea Market', cursive;
+  color: rgb(195, 132, 77);
+  text-align: center;
+  margin-bottom: 2vmin;
+  font-weight: bold;
+}
+
+
+
+.parallax {
+  min-height: 200%;
+  min-width: 200%;
+  background-image: url('./comida.svg');
+  background-attachment: fixed;
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: 40%;
+  animation: p 180s linear infinite;
+  transform: rotate(-15deg);
+}
+
+@keyframes p {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 66% 208.5%;
+  }
 }

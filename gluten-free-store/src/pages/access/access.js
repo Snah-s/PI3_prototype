@@ -44,7 +44,7 @@ function LoginBox({ isLogin, switchAccess }) {
         pointerEvents: isLogin ? 'auto' : 'none',
       }}
     >
-      <div className="title">GLUTEN FREE STORE</div>
+      <div className="title">NO GLUTEN</div>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -124,7 +124,7 @@ function SignUpBox({ isLogin, switchAccess }) {
         pointerEvents: isLogin ? 'none' : 'auto',
       }}
     >
-      <div className="title">GLUTEN FREE STORE</div>
+      <div className="title">NO GLUTEN</div>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -180,14 +180,13 @@ export default function Access() {
   }
 
   return (
-    <div className="body access">
-      <div className="appWrapper">
-      <div className="background background-image">
+    <div className='body'>
+      <div className='background'>
+        <div className='parallax'></div>
       </div>
-        <div className="accessWrapper">
-          <LoginBox isLogin={isLogin} switchAccess={switchAccess} />
-          <SignUpBox isLogin={isLogin} switchAccess={switchAccess} />
-        </div>
+      <div className='accessWrapper'>
+        <LoginBox isLogin={isLogin} switchAccess={switchAccess} />
+        <SignUpBox isLogin={isLogin} switchAccess={switchAccess} />
       </div>
     </div>
   );
