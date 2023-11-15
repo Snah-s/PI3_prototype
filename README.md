@@ -26,19 +26,3 @@ Nuestra misión es abordar de manera efectiva la problemática de la escasa vari
 ```shell
 docker run --name my_postgres -e POSTGRES_PASSWORD=mypassword -p 5432:5432 -d postgres
 ```
-
-## Facilidades :wrench:
-
-Se tiene a disposición un archivo .sh para que el commit y el push se realicen de manera automática, para ello se debe ejecutar el siguiente comando en la terminal:
-
-Para el commit:
-
-```shell
-./commit.sh
-```
-
-Para el push:
-
-```shell
-./push.sh
-```
