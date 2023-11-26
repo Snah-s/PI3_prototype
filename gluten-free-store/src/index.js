@@ -1,46 +1,55 @@
-import React, { useEffect, StrictMode } from 'react';
-import * as ReactDOM from 'react-dom/client';
+import React, { useEffect, StrictMode } from "react";
+import * as ReactDOM from "react-dom/client";
+
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   Navigate,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import Access from './pages/access/access';
-import Discover from './pages/dashboard/dashboard';
-import Post from './pages/post/post';
+import Access from "./pages/access/access";
+import Dashboard from "./pages/dashboard/dashboard";
+import Post from "./pages/post/post";
 
-import './index.css';
+import "./index.css";
+import Cookies from "js-cookie";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Access />,
   },
   {
-    path: 'access',
+    path: "access",
     element: <Access />,
   },
   {
-    path: 'discover',
-    element: <Discover />,
+    path: "dashboard",
+    element: <Dashboard />,
   },
   {
-    path: 'post/:id',
+    path: "post/:id",
     element: <Post />,
   },
 ]);
 
 function checkSession() {
-  const token = localStorage.getItem('token');
+  const token = Cookies.get("token");
+  console.log("Session checked...");
   if (!token) {
-    router.navigate('/access');
+    localStorage.removeItem("displayName");
+    router.navigate("/access");
   }
 }
 
 function App() {
-  checkSession();
+  const loginCheckInterval = 30; // Time in seconds between periodic JWT validations
+  useEffect(() => {
+    checkSession();
+    const intervalId = setInterval(checkSession, loginCheckInterval * 1000);
+    return () => clearInterval(intervalId);
+  }, []);
   return (
     <StrictMode>
       <RouterProvider router={router} />
@@ -48,4 +57,4 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);

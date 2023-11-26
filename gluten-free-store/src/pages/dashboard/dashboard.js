@@ -1,114 +1,159 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useMemo } from "react";
+import axios from "axios";
 
-import './dashboard.css';
-import arrow from './chevron_right_FILL0_wght400_GRAD0_opsz24.svg';
+import "./dashboard.css";
+import arrow from "../../assets/chevron_right_FILL0_wght400_GRAD0_opsz24.svg";
+import profile from "../../assets/person_FILL0_wght400_GRAD0_opsz24.svg";
+import errorImage from "../../assets/image_FILL0_wght400_GRAD0_opsz24.svg";
+import XD from "../../assets/sentiment_very_dissatisfied_FILL0_wght400_GRAD0_opsz24.svg";
+import Cookies from "js-cookie";
+import filterImage from "../../assets/filter_list_FILL0_wght400_GRAD0_opsz24.svg";
 
-function SearchBar() {
-  return (
-    <input
-      className="searchBar"
-      placeholder="Search some products"
-    ></input>
-  );
-}
+const apiIp = process.env.REACT_APP_API_IP;
 
 function CollapseButton({ onClick, status }) {
   return (
     <button className="collapseButton" onClick={onClick}>
       <img
-        className={status ? 'collapseImage' : 'collapseImage rotated'}
-        src={arrow}
-        alt="Arrow"
+        // className={status ? "collapseImage" : "collapseImage rotated"}
+        src={filterImage}
       />
     </button>
   );
 }
 
-function RandomTags() {
-  const randomTags = [];
-  const tagNumber = Math.floor(Math.random() * 3) + 1;
-  for (let i = 0; i < tagNumber; ++i) {
-    const rand = Math.floor(Math.random() * 3) + 1;
-    let color = '';
-    let text = 'Tag ' + i;
-    switch (rand) {
-      case 1:
-        color = 'var(--fuchsia)';
-        break;
-      case 2:
-        color = 'var(--grass)';
-        break;
-      case 3:
-        color = 'var(--mandarina)';
-        break;
-    }
-    const tagStyle = {
-      '--data': `${color}`,
-    };
-    randomTags.push(
-      <div key={i} className="tag" style={tagStyle}>
-        {text}
-      </div>
-    );
-  }
-  return randomTags;
-}
+function UserBar({ themeSwitcherInput }) {
+  const [collapsed, setCollapsed] = useState(false);
 
-function CardRow({ rowIndex }) {
-  const cards = [];
-  for (let i = 0; i < 3; ++i) {
-    let cardIndex = 3 * rowIndex + i;
-    cards.push(
-      <Card key={i} title={'Product ' + cardIndex} location={'Brand, Type'} />
-    );
+  function collapse() {
+    setCollapsed(!collapsed);
   }
-  return <div className="cardRow">{cards}</div>;
-}
 
-function Card({ data }) {
+  function logOut() {
+    Cookies.remove("token");
+    window.location.href = "/access";
+  }
+
+  function createPost() {
+    window.location.href = "/create";
+  }
+
+  const barClass = collapsed ? "userBar userBarCollapsed" : "userBar";
   return (
-    <div className="card">
-      <div className="text">
-        <div className="name">{data.name}</div>
-        <div className="location">
-          {data.brand}, {data.type}
-        </div>
+    <div className={barClass}>
+      <div className="userOptions">
+        <button className="userLink" onClick={createPost}>
+          Create
+        </button>
+        <button className="userLink" onClick={themeSwitcherInput}>
+          Theme
+        </button>
+        <button className="dark userLink logoutLink" onClick={logOut}>
+          Log Out
+        </button>
       </div>
-      <div className="thumbnail">
-        <img className="image" src="https://coffee.alexflipnote.dev/random"></img>
-      </div>
-      <div className="tags">{<RandomTags />}</div>
+      <button className="userButton" onClick={collapse}>
+        <img className="userAvatar" src={profile}></img>
+      </button>
     </div>
   );
 }
 
-function CardCreator() {
-  const apiUrl = 'http://localhost:8080/api/products';
+function TagCreator({ tagData }) {
+  const tags = [];
+  for (let i = 0; i < tagData.length; ++i) {
+    var currentTag = tagData[i];
+    tags.push(
+      <span
+        key={i}
+        className="tag"
+        style={{ background: `${currentTag.color}` }}
+      >
+        {currentTag.name}
+      </span>
+    );
+  }
+  return <>{tags}</>;
+}
+
+function Card({ data, cardClick }) {
+  return (
+    <div className="card" onClick={cardClick}>
+      <div className="text">
+        <span className="name">{data.name}</span>
+        <span className="location">
+          {data.brand}, {data.price}
+        </span>
+      </div>
+      <div className="thumbnail">
+        <img
+          className="image"
+          src={data.imageUrl}
+          onError={(e) => (e.target.src = errorImage)}
+        />
+      </div>
+      <div className="tags">
+        <TagCreator tagData={data.tags} />
+      </div>
+    </div>
+  );
+}
+
+function CardCreator({ searchQuery, selectedTags }) {
+  const apiUrl = `${apiIp}/api/products/nocomments`;
   const [items, setItems] = useState([]);
-  const jwtToken = localStorage.getItem('token');
+
+  const fetcher = axios.create({
+    baseURL: apiUrl,
+    withCredentials: false,
+  });
 
   useEffect(() => {
-    const headers = {
-      Authorization: `Bearer ${jwtToken}`,
-    };
-    axios
-      .get(apiUrl, { headers })
-      .then((response) => {
+    const fetchCards = async () => {
+      const searchUrl = searchQuery
+        ? `${apiUrl}/${encodeURIComponent(searchQuery)}`
+        : apiUrl;
+
+      try {
+        const response = await fetcher.get(searchUrl);
         setItems(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }, [jwtToken]);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchCards();
+  }, [searchQuery, selectedTags]);
+
+  if (items.length === 0) {
+    return <EmptySearch />;
+  } // Early return if text query doesn't find anything
+
+  const filteredItems = items.filter((item) =>
+    selectedTags.length === 0
+      ? true
+      : selectedTags.every((tagId) => item.tags.some((tag) => tag.id === tagId))
+  ); // Uses tags to filter, if no tags are selected then anything goes
+
+  if (filteredItems.length === 0) {
+    return <EmptySearch />;
+  } // Return if tag filter doesn't find anything either
 
   const createRows = () => {
+    const cardsPerRow = 3;
     const rows = [];
-    for (let i = 0; i < items.length; i += 3) {
+    for (let i = 0; i < filteredItems.length; i += cardsPerRow) {
       const row = (
         <div key={i} className="cardRow">
-          {items.slice(i, i + 3).map((item) => (
-            <Card key={item.id} data={item} />
+          {filteredItems.slice(i, i + cardsPerRow).map((item) => (
+            <Card
+              key={item.id}
+              data={item}
+              cardClick={() => {
+                console.log(item.id);
+                window.location.href = `/post/${item.id}`;
+              }}
+            />
           ))}
         </div>
       );
@@ -120,36 +165,69 @@ function CardCreator() {
   return <>{createRows()}</>;
 }
 
+function EmptySearch() {
+  return (
+    <div className="emptySearch">
+      <img className="image" src={XD} />
+      <span>No products found!</span>
+    </div>
+  );
+}
+
 export default function Discover() {
   const [collapsedBar, setCollapse] = useState(false);
+  const [theme, setTheme] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  function setDarkTheme() {
+    console.log("set Dark");
+    setTheme("dark");
+    localStorage.setItem("theme", "dark");
+  }
+
+  function setLightTheme() {
+    console.log("set Light");
+    setTheme("light");
+    localStorage.setItem("theme", "light");
+  }
+
+  function themeSwitcher() {
+    const storedTheme = localStorage.getItem("theme");
+    switch (storedTheme) {
+      case "dark": {
+        setDarkTheme();
+        break;
+      }
+      default: {
+        setLightTheme();
+        break;
+      }
+    }
+  }
+
+  function themeSwitcherInput() {
+    if (theme === "dark") {
+      setLightTheme();
+    } else {
+      setDarkTheme();
+    }
+  }
 
   function showBar() {
     setCollapse(!collapsedBar);
-    console.log('set status to ' + !collapsedBar);
+    console.log("Set left collapsed status to " + !collapsedBar);
   }
 
-  let leftClass = collapsedBar ? 'left' : 'left closed';
-
-  // const cardRows = [];
-  // for (let i = 0; i < 3; ++i) {
-  //   cardRows.push(<CardRow key={i} rowIndex={i} />);
-  // }
-
-  function deleteToken() {
-    console.log('Token deleted');
-    localStorage.removeItem('token');
-    window.location.href = '/access';
-  }
+  useEffect(() => themeSwitcher(), []);
 
   return (
-    <div className="body discover">
+    <div className={`body discover${theme === "light" ? "" : " dark"}`}>
       <div className="appWrapper">
-        <div className="discoverWrapper">
-          <div className="contentWrapper">
-            <div className={leftClass}>
-              <button className="logoutButton" onClick={deleteToken}>
-                Log Out
-              </button>
+        <div className="contentWrapper">
+          <div className="content">
+            <div className={collapsedBar ? "left" : "left leftClosed"}>
+              <TagDisplayer setSelectedTags={setSelectedTags} />
             </div>
             <div className="right">
               <div className="top">
@@ -157,15 +235,96 @@ export default function Discover() {
                   onClick={() => showBar()}
                   status={collapsedBar}
                 />
-                <SearchBar />
+                <SearchBar setSearchQuery={setSearchQuery} />
+                <UserBar themeSwitcherInput={themeSwitcherInput} />
               </div>
               <div className="cardContainer">
-                <CardCreator />
+                <CardCreator
+                  searchQuery={searchQuery}
+                  selectedTags={selectedTags}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function SearchBar({ setSearchQuery }) {
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  return (
+    <input
+      className="searchBar"
+      placeholder="Start typing to search for cool stuff!"
+      name="searchBar"
+      onChange={handleInputChange}
+    ></input>
+  );
+}
+
+function TagDisplayer({ setSelectedTags }) {
+  const apiUrl = `${apiIp}/api/tags`;
+  const [tags, setTags] = useState([]);
+
+  const fetcher = axios.create({
+    baseURL: apiUrl,
+    withCredentials: false,
+  });
+  useEffect(() => {
+    fetcher
+      .get()
+      .then((response) => {
+        setTags(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  const handleTagCheckboxChange = (product) => {
+    const tagId = parseInt(product.target.value, 10);
+    const isSelected = product.target.checked;
+
+    if (isSelected) {
+      setSelectedTags((prevSelectedTags) => [...prevSelectedTags, tagId]);
+    } else {
+      setSelectedTags((prevSelectedTags) =>
+        prevSelectedTags.filter((id) => id !== tagId)
+      );
+    }
+  };
+
+  const tagCheckboxes = tags.map((tag) => (
+    <label
+      style={{
+        background: `${tag.color}`,
+        marginBottom: "1vmin",
+        padding: "0 2vmin",
+        borderRadius: "5vmin",
+        display: "flex",
+        alignItems: "center",
+        color: "white",
+      }}
+      key={tag.id}
+      className="tagFilter"
+    >
+      <input
+        type="checkbox"
+        value={tag.id}
+        className="checkbox"
+        onChange={handleTagCheckboxChange}
+      />
+      {tag.name}
+    </label>
+  ));
+  return (
+    <div className="filterWrapper">
+      <span className="title">Tags</span>
+      <div className="tagContainer">{tagCheckboxes}</div>
     </div>
   );
 }
