@@ -1,69 +1,61 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.model.Comment;
 import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.dto.ProductDTO;
+
+import com.example.demo.service.ProductService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("api/products")
 public class ProductController {
 
     @Autowired
-    private ProductRepository eventRepository;
+    private ProductService productService;
 
-    @Secured({ "ADMIN", "USER" })
     @GetMapping
     public ResponseEntity<List<Product>> read() {
-        List<Product> query = eventRepository.findAll();
-        return new ResponseEntity<List<Product>>(query, HttpStatus.OK);
+        return productService.read();
     }
 
-    @Secured({ "ADMIN", "USER" })
     @GetMapping("/{id}")
-    public ResponseEntity<Product> readId(@PathVariable Long id) {
-        Optional<Product> query = eventRepository.findById(id);
-        if (query.isPresent()) {
-            return new ResponseEntity<Product>(query.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public ResponseEntity<Product> find(@PathVariable Long id) {
+        return productService.find(id);
+    }
+
+    @GetMapping("/nocomments")
+    public ResponseEntity<List<ProductDTO>> readWithoutComments() {
+        return productService.readWithoutComments();
+    }
+
+    @GetMapping("/nocomments/{searchName}")
+    public ResponseEntity<List<ProductDTO>> findWithoutComments(@PathVariable String searchName) {
+        return productService.findWithoutComments(searchName);
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody Product Event) {
-        eventRepository.save(Event);
-        return new ResponseEntity<>("Product created :)))", HttpStatus.CREATED);
+    public ResponseEntity<Product> create(@RequestBody Product product) {
+        return productService.create(product);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@RequestBody Product data, @PathVariable Long id) {
-        Optional<Product> query = eventRepository.findById(id);
-        if (query.isPresent()) {
-            Product instance = query.get();
-            instance = data;
-            eventRepository.save(instance);
-            return new ResponseEntity<>("Product updated :D", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Product not found :((", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Product> update(@RequestBody Product data, @PathVariable Long id) {
+        return productService.update(data, id);
+    }
+
+    @PatchMapping("/{id}/addcomment")
+    public ResponseEntity<Comment> addComment(@PathVariable Long id, @RequestBody Comment comment) {
+        return productService.addComment(id, comment);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        Optional<Product> query = eventRepository.findById(id);
-        if (query.isPresent()) {
-            eventRepository.deleteById(id);
-            return new ResponseEntity<>("Product deleted", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Product not found :((", HttpStatus.NOT_FOUND);
-        }
+        return productService.delete(id);
     }
 }

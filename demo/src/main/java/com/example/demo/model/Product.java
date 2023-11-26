@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -18,21 +20,31 @@ public class Product {
     private String brand;
 
     @Column(nullable = false)
-    private String type;
+    private String country;
 
-    @Column(nullable = false)
-    private double price;
-
-    @Column(nullable = false)
-    private String image;
-
+    @Column(nullable = false, length = 1000)
     private String description;
 
-    @ManyToMany
+    @Column(nullable = false)
+    private Double price;
+
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @OneToMany
+    @JoinTable(name = "event_comments", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "comment_id"))
     private Set<Comment> comments;
 
+    @ManyToMany
+    @JoinTable(name = "event_tags", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags;
+
     public void addComment(Comment comment) {
-        comments.add(comment);
+        this.comments.add(comment);
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public Set<Comment> getComments() {
@@ -63,49 +75,60 @@ public class Product {
         this.brand = brand;
     }
 
-    public String getType() {
-        return this.type;
+    public String getCountry() {
+        return this.country;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCountry(String Country) {
+        this.country = Country;
     }
 
-    public double getPrice(){
-        return this.price;
-    }
-
-    public void setPrice(double price){
-        this.price = price;
-    }
-
-    public String getImage(){
-        return this.image;
-    }
-
-    public void setImage(String image){
-        this.image = image;
-    }
-
-    public String getDescription(){
+    public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(String description){
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Set<Tag> getTags() {
+        return this.tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     public Product() {
 
     }
 
-    public Product(Long id, String name, String brand, String type, double price, String image, String description) {
+    public Product(Long id, String name, String brand, String country, String description, Double price,
+            String imageUrl, Set<Tag> tags, Set<Comment> comments) {
         this.id = id;
         this.name = name;
         this.brand = brand;
-        this.type = type;
-        this.price = price;
-        this.image = image;
+        this.country = country;
         this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.tags = tags;
+        this.comments = comments;
     }
 }
