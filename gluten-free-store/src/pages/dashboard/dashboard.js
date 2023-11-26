@@ -145,7 +145,7 @@ function CardCreator({ searchQuery, selectedTags }) {
               data={item}
               cardClick={() => {
                 console.log(item.id);
-                window.location.href = `/post/${item.id}`;
+                window.location.href = `/product/${item.id}`;
               }}
             />
           ))}

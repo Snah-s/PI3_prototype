@@ -2,8 +2,6 @@ package com.example.demo.model;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.*;
 
 @Entity

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-import "./post.css";
+import "./product.css";
 import loadingIcon from "../../assets/sync_FILL0_wght400_GRAD0_opsz24.svg";
 import backButton from "../../assets/chevron_right_FILL0_wght400_GRAD0_opsz24.svg";
 import noComments from "../../assets/sentiment_neutral_FILL0_wght400_GRAD0_opsz24.svg";
@@ -88,7 +88,7 @@ export default function Product() {
 
 function PageContent({ productData }) {
   const goHome = () => {
-    window.location.href = "/discover";
+    window.location.href = "/dashboard";
   };
 
   return (

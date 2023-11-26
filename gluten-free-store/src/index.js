@@ -10,7 +10,7 @@ import {
 
 import Access from "./pages/access/access";
 import Dashboard from "./pages/dashboard/dashboard";
-import Post from "./pages/post/post";
+import Product from "./pages/product/product";
 
 import "./index.css";
 import Cookies from "js-cookie";
@@ -29,8 +29,8 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "post/:id",
-    element: <Post />,
+    path: "product/:id",
+    element: <Product />,
   },
 ]);
 

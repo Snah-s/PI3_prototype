@@ -139,7 +139,7 @@ function SignUpBox({ isLogin, switchAccess }) {
           expires: new Date(expirationTime),
         });
         localStorage.setItem("displayName", formData.email);
-        window.location.href = "/discover";
+        window.location.href = "/dashboard";
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -207,7 +207,7 @@ function SignUpBox({ isLogin, switchAccess }) {
 
 export default function Access() {
   if (Cookies.get("token")) {
-    window.location.href = "/discover";
+    window.location.href = "/dashboard";
   }
 
   const [isLogin, setIsLogin] = useState(true);
