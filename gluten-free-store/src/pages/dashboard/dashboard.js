@@ -34,17 +34,11 @@ function UserBar({ themeSwitcherInput }) {
     window.location.href = "/access";
   }
 
-  function createPost() {
-    window.location.href = "/create";
-  }
 
   const barClass = collapsed ? "userBar userBarCollapsed" : "userBar";
   return (
     <div className={barClass}>
       <div className="userOptions">
-        <button className="userLink" onClick={createPost}>
-          Create
-        </button>
         <button className="userLink" onClick={themeSwitcherInput}>
           Theme
         </button>
